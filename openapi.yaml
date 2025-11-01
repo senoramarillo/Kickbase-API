@@ -4,8 +4,8 @@ info:
   version: 1.0.0
   description: Unofficial documentation of the Kickbase API
   contact:
-    name: Kai Detmers
-    url: https://github.com/t3mr0i/Kickbase-API
+    name: senoramarillo
+    url: https://github.com/senoramarillo/Kickbase-API
 
 servers:
   - url: https://api.kickbase.com

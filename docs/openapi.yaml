@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  title: Kickbase API Documentation
+  version: 1.0.0
+  description: Unofficial documentation of the Kickbase API
+  contact:
+    name: Kai Detmers
+    url: https://github.com/t3mr0i/Kickbase-API
+
+servers:
+  - url: https://api.kickbase.com
+    description: Production Server
+
+tags:
+  - name: Authentication
+    description: Authentication endpoints
+  - name: League
+    description: League management endpoints
+
+paths:
+  /v4/user/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login to Kickbase
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+  /v4/leagues/{leagueId}/squad:
+    get:
+      tags:
+        - League
+      summary: Get Squad
+      operationId: getSquad
+      parameters:
+        - $ref: '#/components/parameters/LeagueId'
+      responses:
+        '200':
+          description: Squad details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Squad'
+
+components:
+  parameters:
+    LeagueId:
+      name: leagueId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the league
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - em
+        - pass
+      properties:
+        ext:
+          type: boolean
+          description: Extended login
+        em:
+          type: string
+          description: Email address
+        pass:
+          type: string
+          description: Password
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Authentication token
+
+    Squad:
+      type: object
+      properties:
+        it:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+        mppu:
+          type: integer
+          description: Maximum players per user
+
+    Player:
+      type: object
+      properties:
+        i:
+          type: string
+          description: Player ID
+        n:
+          type: string
+          description: Player name
+        pos:
+          type: integer
+          description: Position
+        mv:
+          type: integer
+          description: Market value
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT token
+
+security:
+  - bearerAuth: []

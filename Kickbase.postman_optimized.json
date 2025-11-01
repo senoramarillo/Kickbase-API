@@ -1,0 +1,578 @@
+{
+    "info": {
+        "name": "Kickbase API",
+        "description": "Unofficial Kickbase API Collection",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "https://api.kickbase.com",
+            "type": "string"
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{authToken}}",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Set default headers for all requests",
+                    "pm.request.headers.add({ key: 'User-Agent', value: 'Kickbase/12.0.0' });",
+                    "pm.request.headers.add({ key: 'Content-Type', value: 'application/json' });",
+                    "pm.request.headers.add({ key: 'Accept', value: 'application/json' });"
+                ]
+            }
+        }
+    ],
+    "item": [
+        {
+            "name": "Account & Authentication",
+            "item": [
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/user/login",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"ext\": true,\n  \"em\": \"your@mail.com\",\n  \"loy\": false,\n  \"pass\": \"yourpassword\",\n  \"rep\": {}\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/user/register",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"em\": \"your@mail.com\",\n  \"pass\": \"yourpassword\",\n  \"name\": \"Your Name\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Forgot Password",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/user/forgotpassword",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"em\": \"your@mail.com\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Account Settings",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/user/settings"
+                    }
+                },
+                {
+                    "name": "Update Account Settings",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{baseUrl}}/v4/user/settings",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"New Name\",\n  \"email\": \"new@mail.com\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Set Profile Image",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/user/settings/image",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": "/path/to/image.jpg"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Edit Password",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/user/password",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"oldPassword\": \"currentpass\",\n  \"newPassword\": \"newpass\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Account",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{baseUrl}}/v4/user"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "League Management",
+            "item": [
+                {
+                    "name": "Create League",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"My League\",\n  \"password\": \"leaguepass\",\n  \"public\": false\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Join League",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/join"
+                    }
+                },
+                {
+                    "name": "Join Private League",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/join/{{code}}",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"password\": \"leaguepass\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get League Preview Data",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/overview"
+                    }
+                },
+                {
+                    "name": "Get League Ranking",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/ranking"
+                    }
+                },
+                {
+                    "name": "Get User League Info",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/me"
+                    }
+                },
+                {
+                    "name": "Get League Activities Feed",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/activitiesFeed"
+                    }
+                },
+                {
+                    "name": "Validate Invitation Code",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/invitations/{{code}}/validate"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Market & Players",
+            "item": [
+                {
+                    "name": "Get Market Overview",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/market"
+                    }
+                },
+                {
+                    "name": "Get Player Details",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/players/{{playerId}}"
+                    }
+                },
+                {
+                    "name": "Get Player Stats",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/players/{{playerId}}/stats"
+                    }
+                },
+                {
+                    "name": "Get Player Feed",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/players/{{playerId}}/feed",
+                        "query": [
+                            {
+                                "key": "filter",
+                                "value": "14"
+                            },
+                            {
+                                "key": "start",
+                                "value": "0"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Buy Player",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/market/{{playerId}}/buy",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"price\": 1000000\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Sell Player",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/market/{{playerId}}/sell",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"price\": 1000000,\n  \"days\": 3\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Live Player Info",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/live/players/{{playerId}}"
+                    }
+                },
+                {
+                    "name": "Get Lined Up Players",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/live/linedupplayers"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Competition",
+            "item": [
+                {
+                    "name": "Search Competition",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/competition/search",
+                        "query": [
+                            {
+                                "key": "query",
+                                "value": "{{name}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get Competition Details",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/competition/{{competitionId}}"
+                    }
+                },
+                {
+                    "name": "Get Live Match Data",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/competition/{{competitionId}}/matches/live"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Challenge",
+            "item": [
+                {
+                    "name": "Get Challenge Status",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/challenge/status"
+                    }
+                },
+                {
+                    "name": "Get Challenge Rewards",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/challenge/rewards"
+                    }
+                },
+                {
+                    "name": "Claim Challenge Reward",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/challenge/rewards/{{rewardId}}/claim"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "Get League Settings",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/admin/settings"
+                    }
+                },
+                {
+                    "name": "Update League Settings",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/admin/settings",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated League Name\",\n  \"public\": true,\n  \"password\": \"newpassword\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get League Members",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/admin/members"
+                    }
+                },
+                {
+                    "name": "Kick Member",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/admin/members/{{userId}}/kick"
+                    }
+                },
+                {
+                    "name": "Transfer Admin Rights",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/admin/transfer",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": \"{{newAdminUserId}}\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Chat",
+            "item": [
+                {
+                    "name": "Get Chat Messages",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/chat",
+                        "query": [
+                            {
+                                "key": "start",
+                                "value": "0"
+                            },
+                            {
+                                "key": "limit",
+                                "value": "50"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Send Chat Message",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/chat",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"message\": \"Hello League!\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Chat Message",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{baseUrl}}/v4/leagues/{{leagueId}}/chat/{{messageId}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Utility",
+            "item": [
+                {
+                    "name": "Get Server Status",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/status"
+                    }
+                },
+                {
+                    "name": "Get App Config",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/config"
+                    }
+                },
+                {
+                    "name": "Get Version Info",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/version"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "News",
+            "item": [
+                {
+                    "name": "Get News Feed",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/news",
+                        "query": [
+                            {
+                                "key": "start",
+                                "value": "0"
+                            },
+                            {
+                                "key": "limit",
+                                "value": "20"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get News Article",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/v4/news/{{articleId}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Deprecated Endpoints",
+            "item": [
+                {
+                    "name": "Get League Stats (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/stats"
+                    }
+                },
+                {
+                    "name": "Get Player Stats (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/players/{{playerId}}/stats"
+                    }
+                },
+                {
+                    "name": "Get Player Feed (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/players/{{playerId}}/feed",
+                        "query": [
+                            {
+                                "key": "filter",
+                                "value": "14"
+                            },
+                            {
+                                "key": "start",
+                                "value": "0"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get Player Details (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/players/{{playerId}}"
+                    }
+                },
+                {
+                    "name": "Get League Me (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/me"
+                    }
+                },
+                {
+                    "name": "Get Market (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/market"
+                    }
+                },
+                {
+                    "name": "Get Live Player Info (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/live/players/{{playerId}}"
+                    }
+                },
+                {
+                    "name": "Get Lined Up Players (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/live/linedupplayers"
+                    }
+                },
+                {
+                    "name": "Get Live Info (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/live"
+                    }
+                },
+                {
+                    "name": "Get Current Gift (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/leagues/{{leagueId}}/currentgift"
+                    }
+                },
+                {
+                    "name": "Search Competition (Old)",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/competition/search",
+                        "query": [
+                            {
+                                "key": "query",
+                                "value": "{{name}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+} 

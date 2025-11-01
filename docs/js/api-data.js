@@ -2,7 +2,7 @@ const apiData = {
     info: {
         name: "Kickbase API Documentation",
         version: "12.0.0",
-        description: "Unofficial documentation of the Kickbase API made by Kai Detmers",
+        description: "Unofficial documentation of the Kickbase API",
         baseUrl: "https://api.kickbase.com"
     },
     endpoints: [
